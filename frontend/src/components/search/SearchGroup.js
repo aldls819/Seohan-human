@@ -132,7 +132,9 @@ const SSearchbarDiv = styled.div`
 `;
 
 const SSearchResultDiv = styled.div`
-  /* height: 85%; */
+  margin-top: 0.8rem;
+  height: 50vh;
+  overflow-y: auto;
 `;
 
 const SSearchBar = styled.input`
@@ -163,7 +165,6 @@ const SSearchButton = styled.button`
 const SSearchResults = styled.div`
   margin-top: 0.8rem;
   height: 65vh;
-  overflow-y: auto;
 `;
 
 const SListItem = styled.div`

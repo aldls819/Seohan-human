@@ -45,6 +45,13 @@ const SP = styled.div`
   font-weight: 700;
 `;
 
+const SSP = styled.div`
+  margin-top: 0;
+  margin-left: 4rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+`;
+
 const SImgContainer = styled.div`
   position: relative;
   display: inline-block;
@@ -139,8 +146,8 @@ const SInfoDiv = styled.div`
 `;
 
 const SSearchButton = styled.button`
-  padding: 1rem 2.5rem;
-  margin-left: 73rem;
+  padding: 1.2rem 1.7rem;
+  margin-left: 95rem;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
   background-color: #82b2f8;
@@ -183,21 +190,26 @@ const EmployeeItem = () => {
 
   const [isExitModalOpen, setIsExitModalOpen] = useState(false);
 
-  const handleExitClick = () => {
+  const handleRemove = () => {
     setIsExitModalOpen(true);
   };
-  const handleExitSubmit = (comId, empTmnDate, resignReason) => {
+  function formatDate(date) {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+  const handleExitSubmit = (resignReason) => {
     // Make the API call using axios or your preferred HTTP client
-    console.log(resignReason);
-    exitEmployee(comId, empTmnDate, resignReason)
+    exitEmployee(id, formatDate(new Date()), resignReason)
       .then(() => {
-        // Handle successful API response, e.g., reload data, show success message
-        alert("삭제되었습니다.");
+        alert("퇴사 처리 되었습니다.");
         setIsExitModalOpen(false);
+        setJoinOut(formatDate(new Date()));
       })
       .catch((error) => {
-        // Handle API errors gracefully, e.g., show error message
-        console.error("Error calling exitEmployee API:", error);
+        alert(error.response.data);
+        console.error("Error calling exitEmployee API:", error.response.data);
       });
   };
 
@@ -233,7 +245,7 @@ const EmployeeItem = () => {
           )}
         </SImgContainer>
         <SInfoContainer>
-          <SSearchButton onClick={handleExitClick}>퇴사처리</SSearchButton>
+          <SSearchButton onClick={handleRemove}>퇴사 처리</SSearchButton>
           <ExitEmployeeModal
             isOpen={isExitModalOpen}
             onClose={() => setIsExitModalOpen(false)}
