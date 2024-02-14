@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import db.connection.Connection_DB;
-import org.json.JSONArray;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
