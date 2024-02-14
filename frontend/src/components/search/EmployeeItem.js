@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
-import { useRecoilValue } from "recoil";
-import { userDataState, selectedIdState } from "../../recoil/SearchRecoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { selectedIdState, userDataState } from "../../recoil/SearchRecoil";
 
 //import image
 import cameraIcon from "../../assets/img/camera_enhance.svg";
@@ -146,8 +146,8 @@ const SInfoDiv = styled.div`
 `;
 
 const SSearchButton = styled.button`
-  padding: 1.2rem 1.7rem;
-  margin-left: 95rem;
+  padding: 1.2rem 1.5rem;
+  margin-left: 98rem;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
   background-color: #82b2f8;
@@ -165,10 +165,29 @@ const randomImages = [random1, random2, random3];
 
 const EmployeeItem = () => {
   const userId = useRecoilValue(selectedIdState);
-  const userData = useRecoilValue(userDataState).find(
+  let userData = useRecoilValue(userDataState).find(
     (user) => user.com_id === userId
   );
-
+  if (!userData) {
+    userData = {
+      com_id: 1,
+      name_kor: "정지은",
+      name_eng: "Admin",
+      mob_num: "010-1234-5678",
+      dep_id: "인사부",
+      rank_id: "대리",
+      rrn: "980819-1234567",
+      emp_email: "admin@example.com",
+      address: "서울시 강남구",
+      emp_type: "2020-08-19", // 예시로 가입 상태를 true로 설정
+      emp_hiredate: "2024-01-01", // 가입일
+      emp_tmndate: "-", // 퇴사일
+      final_edu: "대졸", // 학력
+      major: "컴퓨터 공학", // 전공
+      military: "N", // 병역 정보
+      etc: "관리자 계정", // 기타 정보
+    };
+  }
   const [name, setName] = useState(userData?.name_kor || "");
   const [englishName, setEnglishName] = useState(userData?.name_eng || "");
   const [id, setEmployeeId] = useState(userData?.com_id || "");
@@ -245,7 +264,9 @@ const EmployeeItem = () => {
           )}
         </SImgContainer>
         <SInfoContainer>
-          <SSearchButton onClick={handleRemove}>퇴사 처리</SSearchButton>
+          {userId !== 1 && (
+            <SSearchButton onClick={handleRemove}>퇴사 처리</SSearchButton>
+          )}
           <ExitEmployeeModal
             isOpen={isExitModalOpen}
             onClose={() => setIsExitModalOpen(false)}
